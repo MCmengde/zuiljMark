@@ -28,6 +28,9 @@ import java.util.Optional;
 import java.util.prefs.Preferences;
 
 
+/**
+ * @author Mengde
+ */
 public class Main extends Application {
 	
 	public static boolean flag = true;
