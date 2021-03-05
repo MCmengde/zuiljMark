@@ -29,82 +29,68 @@ import java.util.prefs.Preferences;
 
 
 /**
+ * The main class to start the app.
+ *
  * @author Mengde
  */
 public class Main extends Application {
-	
-	public static boolean flag = true;
-	
+
+    public static boolean flag = true;
+
     private Stage primaryStage;
     private BorderPane rootLayout;
-    
+
     /**
      * The data as an observable list of Rectangles.
      */
     private final ObservableList<Rectangle> rectangleData = FXCollections.observableArrayList();
-    
+
     /**
-     * Constructor
+     * The constructor of the main class.
+     * When the class is initialized, an new rectangle will be add to the rectangleData.
      */
     public Main() {
-    	//an example rectangle
+        // an example rectangle
         rectangleData.add(new Rectangle(20.0, 20.0, 100.0, 100.0));
     }
-    
-    /**
-     * Returns the data as an observable list of Rectangles. 
-     */
-    public ObservableList<Rectangle> getRectangleData() {
-        return rectangleData;
-    }
-    /**
-     * remove all elements in current list
-     * and add a new elements to the new list
-     */
-    public void rmAll() {
-		rectangleData.clear();
-		rectangleData.add(new Rectangle(20.0, 20.0, 100.0, 100.0));
-	}
-    
+
+
     @Override
     public void start(Stage primaryStage) {
-    	//initial the stage and set title to the window
+        // Initial the stage and set title to the window
         this.setPrimaryStage(primaryStage);
         this.getPrimaryStage().setTitle("zuiljmark");
-        
-        //initial the root layout
+
+        // Initial the root layout
         initRootLayout();
-        //initial the mark overview
+        // Initial the mark overview
         showMarkOverview();
-        
-        //ensure the files saved before closed
+
+        // Ensure the files saved before closed
         primaryStage.setOnCloseRequest(event -> {
-            System.out.println("closed");
-            System.out.println(Main.flag);
-            if(!Main.flag) {
-                closeWindow();
+            if (!Main.flag) {
+                saveOrNot();
             }
         });
-        
     }
-    
+
+
     /**
-     * Initializes the root layout and tries 
-     * to load the example picture file.
+     * Initialize the root layout and try to load the example picture file.
      */
     public void initRootLayout() {
         try {
-            // Load root layout from fxml file.
+            // Load root layout from fxml file
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(Main.class
                     .getResource("view/RootLayout.fxml"));
             rootLayout = loader.load();
 
-            // Show the scene containing the root layout.
+            // Show the scene containing the root layout
             Scene scene = new Scene(rootLayout);
             getPrimaryStage().setScene(scene);
 
-            // Give the controller access to the main app.
+            // Give the controller access to the main app
             RootLayoutController controller = loader.getController();
             controller.setMainApp(this);
 
@@ -115,7 +101,36 @@ public class Main extends Application {
     }
 
     /**
-     * Shows the mark overview inside the root layout.
+     * Return the data as an observable list of Rectangles.
+     */
+    public ObservableList<Rectangle> getRectangleData() {
+        return rectangleData;
+    }
+
+    /**
+     * Return the main stage.
+     */
+    public Stage getPrimaryStage() {
+        return primaryStage;
+    }
+
+    /**
+     * Set primary stage.
+     */
+    public void setPrimaryStage(Stage primaryStage) {
+        this.primaryStage = primaryStage;
+    }
+
+    /**
+     * Remove all elements in current list and then add a new elements to the new list.
+     */
+    public void rmAll() {
+        rectangleData.clear();
+        rectangleData.add(new Rectangle(20.0, 20.0, 100.0, 100.0));
+    }
+
+    /**
+     * Shows mark overview inside the root layout.
      */
     public void showMarkOverview() {
         try {
@@ -123,10 +138,10 @@ public class Main extends Application {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(Main.class.getResource("view/MarkOverview.fxml"));
             AnchorPane markOverview = loader.load();
-            
+
             // Set mark overview into the center of root layout.
             rootLayout.setCenter(markOverview);
-            
+
             // Give the controller access to the main app.
             MarkOverviewController controller = loader.getController();
             controller.setMainApp(this);
@@ -134,23 +149,13 @@ public class Main extends Application {
             e.printStackTrace();
         }
     }
-    
-    /**
-     * Returns the main stage.
-     */
-    public Stage getPrimaryStage() {
-        return primaryStage;
-    }
 
-    public static void main(String[] args) {
-        launch(args);
-    }
-    
+
+
     /**
-     * Returns the picture file preference, i.e. the file that was last opened.
+     * Return the picture file preference, i.e. the file that was last opened.
      * The preference is read from the OS specific registry. If no such
      * preference can be found, null is returned.
-     * 
      */
     public File getPicFilePath() {
         Preferences prefs = Preferences.userNodeForPackage(Main.class);
@@ -165,7 +170,7 @@ public class Main extends Application {
     /**
      * Sets the file path of the currently loaded file. The path is persisted in
      * the OS specific registry.
-     * 
+     *
      * @param file the file or null to remove the path
      */
     public void setPicFilePath(File file) {
@@ -182,11 +187,10 @@ public class Main extends Application {
             getPrimaryStage().setTitle("zuiljMark");
         }
     }
-    
+
     /**
-     * Loads picture data from the specified file. 
+     * Load picture data from the specified file.
      * The current person data will be replaced.
-     * 
      */
     public void loadPicDataFromFile(File file) {
         try {
@@ -196,15 +200,15 @@ public class Main extends Application {
 
             // Reading XML from the file and unmarshalling.
             PicListWrapper wrapper = (PicListWrapper) um.unmarshal(file);
-            
+
             //update the rectangle data list
             rectangleData.clear();
             rectangleData.addAll(wrapper.getRectangles());
 
             // Save the file path to the registry.
             setPicFilePath(file);
-        } catch (Exception e) { 
-        	// catches ANY exception
+        } catch (Exception e) {
+            // catches ANY exception
             Dialogs.create()
                     .title("Error")
                     .masthead("Could not load data from file:\n" + file.getPath())
@@ -214,7 +218,6 @@ public class Main extends Application {
 
     /**
      * Saves the current picture data to the specified file.
-     * 
      */
     public void savePicDataToFile(File file) {
         try {
@@ -238,54 +241,56 @@ public class Main extends Application {
                     .showException(e);
         }
     }
-    
+
     /**
      * Ask if you want to save the file when closing the window.
      */
-    public void closeWindow() {
+    public void saveOrNot() {
         Alert alert;
         alert = new Alert(AlertType.CONFIRMATION);
         alert.setTitle("Tips");
-    	alert.setHeaderText("Do you want to save it?");
-    	alert.setContentText("Choose your option.");
+        alert.setHeaderText("Do you want to save it?");
+        alert.setContentText("Choose your option.");
 
-    	ButtonType buttonTypeOne = new ButtonType("Yes");
-    	ButtonType buttonTypeTwo = new ButtonType("No");
-    	
-    	alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo);
+        ButtonType buttonTypeOne = new ButtonType("Yes");
+        ButtonType buttonTypeTwo = new ButtonType("No");
 
-    	Optional<ButtonType> result = alert.showAndWait();
-    	if (result.get() == buttonTypeOne){
-    		File picFile = getPicFilePath();
-    		if (picFile != null) {
-    		    savePicDataToFile(picFile);
-    		} else {
-    			FileChooser fileChooser = new FileChooser();
+        alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo);
 
-    		    // Set extension filter
-    		    fileChooser.getExtensionFilters().addAll(
-    		    		new ExtensionFilter("XMl files", ".xml"));
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == buttonTypeOne) {
+            File picFile = getPicFilePath();
+            if (picFile != null) {
+                savePicDataToFile(picFile);
+            } else {
+                FileChooser fileChooser = new FileChooser();
 
-    		    // Show save file dialog
-    		    File file = fileChooser.showSaveDialog(getPrimaryStage());
+                // Set extension filter
+                fileChooser.getExtensionFilters().addAll(
+                        new ExtensionFilter("XMl files", ".xml"));
 
-    		    if (file != null) {
-    		        // Make sure it has the correct extension
-    		        if (!file.getPath().endsWith(".xml")) {
-    		            file = new File(file.getPath() + ".xml");
-    		        }
-    		        savePicDataToFile(file);
-    		    }
-    		}
-    		System.exit(0);
-    	    // ... user choose "Yes"
-    	} else if (result.get() == buttonTypeTwo) {
-    		 System.exit(0);
-    	    // ... user choose "No"
-        } 
+                // Show save file dialog
+                File file = fileChooser.showSaveDialog(getPrimaryStage());
+
+                if (file != null) {
+                    // Make sure it has the correct extension
+                    if (!file.getPath().endsWith(".xml")) {
+                        file = new File(file.getPath() + ".xml");
+                    }
+                    savePicDataToFile(file);
+                }
+            }
+            System.exit(0);
+            // ... user choose "Yes"
+        } else if (result.get() == buttonTypeTwo) {
+            System.exit(0);
+            // ... user choose "No"
+        }
     }
 
-	public void setPrimaryStage(Stage primaryStage) {
-		this.primaryStage = primaryStage;
-	}
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+
 }

@@ -32,7 +32,7 @@ public class MarkOverviewController {
     private TableColumn<Rectangle, String> wordsColumn;
     
     private Main mainApp;
-	private static String picPath = new File("./testImage/test.jpg").toURI().toString();
+	private static String picPath = new File("./resources/testImage/test.jpg").toURI().toString();
     private Image image;
     
     Color RED = Color.RED;
@@ -50,7 +50,7 @@ public class MarkOverviewController {
 	private double eY;
 	
 	/**
-	 * change the size of Image View to fit the image
+	 * Change the size of Image View to fit the image.
 	 */
 	private void setImageView() {
 		myImageView.setFitHeight(image.getHeight());
@@ -58,8 +58,7 @@ public class MarkOverviewController {
 	}
 
     /**
-     * The constructor.
-     * The constructor is called before the initialize() method.
+     * The constructor, which is called before the initialize() method.
      */
     public MarkOverviewController() {
     	
@@ -74,7 +73,7 @@ public class MarkOverviewController {
     	System.out.println(picPath);
 
     	wordsColumn.setCellValueFactory(cellData -> cellData.getValue().wordsProperty());
-    	//add listener to rectangle table
+    	// Add listener to rectangle table.
     	rectangleTable.itemsProperty().addListener(
     			(observable, oldValue, newValue) -> drawRects());
     	
