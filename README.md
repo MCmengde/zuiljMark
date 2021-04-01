@@ -1,2 +1,2 @@
 # zuiljmark
- A tool to laber images
+ A tool to label images
