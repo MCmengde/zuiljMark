@@ -19,7 +19,7 @@ import java.util.Optional;
  * application layout containing a menu bar and space where other JavaFX
  * elements can be placed.
  * 
- * @author mengde
+ * @author Mengde
  */
 public class RootLayoutController {
 
@@ -112,7 +112,7 @@ public class RootLayoutController {
     private void handleAbout() {
     	Alert alert = new Alert(AlertType.INFORMATION);
     	alert.setTitle("How to use the software");
-    	alert.setHeaderText("when you get the software for the fisrt time, you maybe don't know the usage of it, so the specific steps are as following");
+    	alert.setHeaderText("when you get the software for the first time, you maybe don't know the usage of it, so the specific steps are as following");
     	alert.setContentText("1.Load an image.  Click on the \"File\" item and select the \"Open\" button to open the image you want to label in the folder.\n"+ "\n"
     	           		   +"2.The movement and scaling of the picture.  Click the \"Refresh\" button and the image will appear in the action box. When you\n"
     			           +"   manipulate the picture, the mouse must be on the picture. Press and hold the right mouse button to move the image, and slide the\n"
@@ -198,33 +198,33 @@ public class RootLayoutController {
         		new ExtensionFilter("XML files", "*.xml"));
 
         // Show save file dialog
-        File orginFile = fileChooser.showOpenDialog(mainApp.getPrimaryStage());
-        System.out.println("orginpath" + orginFile.toString());
-        System.out.println("name:" + getFileNameNoEx(orginFile.getName ()));
-        if (orginFile.getName().endsWith(".xml")) {
+        File originFile = fileChooser.showOpenDialog(mainApp.getPrimaryStage());
+        System.out.println("original path" + originFile.toString());
+        System.out.println("name:" + getFileNameNoEx(originFile.getName ()));
+        if (originFile.getName().endsWith(".xml")) {
         	//send xml file to mainApp
-        	mainApp.loadPicDataFromFile(orginFile);
+        	mainApp.loadPicDataFromFile(originFile);
         	//find the corresponding image file
-        	if (!"0".equals(findFiles(getFileNameNoEx(orginFile.getName()) + ".jpg", orginFile.getParent()))) {
-				MarkOverviewController.setPicPath("file:" + getFileNameNoEx(orginFile.toString()) + ".jpg");
-			} else if (!"0".equals(findFiles(getFileNameNoEx(orginFile.getName()) + ".png", orginFile.getParent()))) {
-				MarkOverviewController.setPicPath("file:" + getFileNameNoEx(orginFile.toString()) + ".jpg");
+        	if (!"0".equals(findFiles(getFileNameNoEx(originFile.getName()) + ".jpg", originFile.getParent()))) {
+				MarkOverviewController.setPicPath("file:" + getFileNameNoEx(originFile.toString()) + ".jpg");
+			} else if (!"0".equals(findFiles(getFileNameNoEx(originFile.getName()) + ".png", originFile.getParent()))) {
+				MarkOverviewController.setPicPath("file:" + getFileNameNoEx(originFile.toString()) + ".jpg");
 			}
-		} else if (orginFile.toString().endsWith(".jpg") || 
-				orginFile.toString().endsWith(".png")) {
-			System.out.println("current image" + orginFile.getName ());
-			MarkOverviewController.setPicPath("file:" + orginFile.toString());
-			if (!"0".equals(findFiles(getFileNameNoEx(orginFile.getName()) + ".xml", orginFile.getParent()))) {
-				mainApp.loadPicDataFromFile(new File(findFiles(getFileNameNoEx(orginFile.getName()) 
-						+ ".xml", orginFile.getParent())));
-				System.out.println("current xml" + orginFile.getParent()
-						+ orginFile.getName() + ".xml");
+		} else if (originFile.toString().endsWith(".jpg") ||
+				originFile.toString().endsWith(".png")) {
+			System.out.println("current image" + originFile.getName ());
+			MarkOverviewController.setPicPath("file:" + originFile);
+			if (!"0".equals(findFiles(getFileNameNoEx(originFile.getName()) + ".xml", originFile.getParent()))) {
+				mainApp.loadPicDataFromFile(new File(findFiles(getFileNameNoEx(originFile.getName())
+						+ ".xml", originFile.getParent())));
+				System.out.println("current xml" + originFile.getParent()
+						+ originFile.getName() + ".xml");
 			} else {
 				mainApp.rmAll();
-				mainApp.savePicDataToFile(new File(getFileNameNoEx(orginFile.toString()) + ".xml"));
-				mainApp.loadPicDataFromFile(new File(getFileNameNoEx(orginFile.toString()) + ".xml"));
-				System.out.println("new xml" +orginFile.getParentFile().toString() 
-						+ getFileNameNoEx(orginFile.getName()) + ".xml");
+				mainApp.savePicDataToFile(new File(getFileNameNoEx(originFile.toString()) + ".xml"));
+				mainApp.loadPicDataFromFile(new File(getFileNameNoEx(originFile.toString()) + ".xml"));
+				System.out.println("new xml" +originFile.getParentFile().toString()
+						+ getFileNameNoEx(originFile.getName()) + ".xml");
 			}
 		}
     }

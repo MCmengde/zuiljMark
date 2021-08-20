@@ -42,8 +42,8 @@ public class MarkOverviewController {
     
     private double startX;
 	private double startY;
-	private double traslateX;
-	private double traslateY;
+	private double translateX;
+	private double translateY;
 	private double sX;
 	private double sY;
 	private double eX;
@@ -188,8 +188,8 @@ public class MarkOverviewController {
 					System.out.println("rightPressed:x=" + event.getX() + ";y=" + event.getY());
 					startX = event.getSceneX();
 					startY = event.getSceneY();
-					traslateX = myImageView.getTranslateX();
-					traslateY = myImageView.getTranslateY();
+					translateX = myImageView.getTranslateX();
+					translateY = myImageView.getTranslateY();
 
 				} else if (event.getButton() == MouseButton.PRIMARY) {
 
@@ -231,8 +231,8 @@ public class MarkOverviewController {
 			myImageView.setOnDragOver(event -> {
 				System.out.println("onDragOver:" + (event.getSceneX()-startX) + ";"
 						+ "y=" + (event.getSceneY()-startY));
-				myImageView.setTranslateX(traslateX+event.getSceneX()-startX);
-				myImageView.setTranslateY(traslateY+event.getSceneY()-startY);
+				myImageView.setTranslateX(translateX +event.getSceneX()-startX);
+				myImageView.setTranslateY(translateY +event.getSceneY()-startY);
 			});
 			myImageView.setOnMouseClicked(event -> {
 

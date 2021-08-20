@@ -5,10 +5,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 
 /**
- * Helper class to wrap a list of persons. This is used for saving the
+ * Helper class to wrap a list of rectangle. This is used for saving the
  * list of rectangles to XML.
  * 
- * @author mengde
+ * @author Mengde
  */
 @XmlRootElement(name = "rectangles")
 public class PicListWrapper {
